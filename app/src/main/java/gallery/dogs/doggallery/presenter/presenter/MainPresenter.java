@@ -46,7 +46,6 @@ public class MainPresenter implements MainContract.Calls {
 
 
     //OBSERVERS
-
     /**********************************************************************************************/
     public DisposableObserver<ResObj> getHomeImagesObserver() {
         return new DisposableObserver<ResObj>() {

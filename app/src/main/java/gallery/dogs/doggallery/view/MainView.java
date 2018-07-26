@@ -6,16 +6,24 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import gallery.dogs.doggallery.R;
 import gallery.dogs.doggallery.contract.MainContract;
 import gallery.dogs.doggallery.model.pojo.ResObj;
+import gallery.dogs.doggallery.presenter.adapters.HomeAdapter;
 import gallery.dogs.doggallery.presenter.listeners.AboutDialog;
+import gallery.dogs.doggallery.presenter.presenter.MainPresenter;
 
 public class MainView extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainContract.View {
@@ -29,6 +37,14 @@ public class MainView extends AppCompatActivity
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
+
+    public static List<String> imagesList = new ArrayList<>();
+    @BindView(R.id.swipy)
+    SwipyRefreshLayout swipy;
+    @BindView(R.id.rv)
+    RecyclerView rv;
+    HomeAdapter homeAdapter;
+    MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +69,7 @@ public class MainView extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -76,7 +92,6 @@ public class MainView extends AppCompatActivity
             new AboutDialog(MainView.this);
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

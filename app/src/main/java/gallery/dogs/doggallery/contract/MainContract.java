@@ -13,4 +13,9 @@ public interface MainContract {
     interface Calls {
         void getHomeImages();
     }
+
+    //ENDLESS RECYCLERVIEW
+    interface OnBottomReachedListener {
+        void onBottomReached(int position);
+    }
 }
