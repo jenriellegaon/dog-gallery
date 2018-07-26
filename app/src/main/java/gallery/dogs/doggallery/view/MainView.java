@@ -1,4 +1,4 @@
-package gallery.dogs.dogsgallery.view;
+package gallery.dogs.doggallery.view;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import gallery.dogs.dogsgallery.R;
+import gallery.dogs.doggallery.R;
+import gallery.dogs.doggallery.presenter.listeners.AboutDialog;
 
 public class MainView extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -91,6 +92,8 @@ public class MainView extends AppCompatActivity
 
         } else if (id == R.id.nav_about) {
 
+            //displays about dialog
+            new AboutDialog(MainView.this);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
