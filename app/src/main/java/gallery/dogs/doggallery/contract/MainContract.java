@@ -8,6 +8,8 @@ public interface MainContract {
         void showToast(String message);
         void showError(String error);
         void showHomeImages(ResObj resObj);
+
+        void initViews();
     }
 
     interface Calls {

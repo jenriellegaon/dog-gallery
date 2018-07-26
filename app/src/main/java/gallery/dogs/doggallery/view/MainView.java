@@ -6,12 +6,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +42,17 @@ public class MainView extends AppCompatActivity
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
 
-    public static List<String> imagesList = new ArrayList<>();
     @BindView(R.id.swipy)
     SwipyRefreshLayout swipy;
+
     @BindView(R.id.rv)
     RecyclerView rv;
+
     HomeAdapter homeAdapter;
     MainPresenter presenter;
+
+    public static List<String> imagesList = new ArrayList<>();
+    StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,16 @@ public class MainView extends AppCompatActivity
         //Bind Views
         ButterKnife.bind(this);
 
+        //Initialize Views
+        initViews();
+
+        //Initialize MVP
+        presenter = new MainPresenter(this);
+
+    }
+
+    @Override
+    public void initViews() {
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle;
         toggle = new ActionBarDrawerToggle(
@@ -65,6 +83,59 @@ public class MainView extends AppCompatActivity
         onNavigationItemSelected(navigationViewLeft.getMenu().findItem(R.id.nav_home));
         navigationViewLeft.setCheckedItem(R.id.nav_home);
 
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        rv.setLayoutManager(staggeredGridLayoutManager);
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setHasFixedSize(true);
+
+        homeAdapter = new HomeAdapter(imagesList, rv, MainView.this);
+        rv.setAdapter(homeAdapter);
+        homeAdapter.notifyDataSetChanged();
+
+        swipy.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(SwipyRefreshLayoutDirection direction) {
+
+                //Clear list then initiate presenter
+                //Enable footer = enable loading more images
+                imagesList.clear();
+                presenter.getHomeImages();
+                homeAdapter.enableFooter(true);
+            }
+        });
+
+        homeAdapter.setOnBottomReachedListener(new MainContract.OnBottomReachedListener() {
+            @Override
+            public void onBottomReached(int position) {
+
+                //Load more set of images
+                presenter.getHomeImages();
+                homeAdapter.enableFooter(true);
+            }
+        });
+
+
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+
+            presenter = new MainPresenter(this);
+            presenter.getHomeImages();
+            showToast("HOME");
+        } else if (id == R.id.nav_browse) {
+            showToast("BROWSE");
+        } else if (id == R.id.nav_about) {
+            //displays about dialog
+            new AboutDialog(MainView.this);
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -75,25 +146,6 @@ public class MainView extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-
-        } else if (id == R.id.nav_browse) {
-
-        } else if (id == R.id.nav_about) {
-
-            //displays about dialog
-            new AboutDialog(MainView.this);
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     @Override
@@ -109,5 +161,21 @@ public class MainView extends AppCompatActivity
     @Override
     public void showHomeImages(ResObj resObj) {
 
+        Log.d("RESULT", resObj.getStatus());
+
+        if (resObj.getStatus().equals("success")) {
+
+            imagesList.addAll(resObj.getMessage());
+            homeAdapter.notifyDataSetChanged();
+            swipy.setRefreshing(false);
+
+            Log.d("URL ADDED", resObj.getMessage().toString());
+        } else {
+            Log.d("RESPONSE ERROR! ", "Response error");
+            homeAdapter.enableFooter(false);
+        }
+
     }
+
+
 }
