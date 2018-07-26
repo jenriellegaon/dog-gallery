@@ -6,9 +6,11 @@ public interface MainContract {
 
     interface View {
         void showToast(String message);
-
         void showError(String error);
-
         void showHomeImages(ResObj resObj);
+    }
+
+    interface Calls {
+        void getHomeImages();
     }
 }

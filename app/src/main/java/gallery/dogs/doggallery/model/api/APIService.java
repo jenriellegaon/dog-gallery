@@ -9,7 +9,7 @@ import retrofit2.http.Path;
 public interface APIService {
 
     @GET(Client.RANDOM)
-    Observable<ResObj> getRandomImages();
+    Observable<ResObj> getHomeImages();
 
     @GET("/api/breed/{breed}/images")
     Observable<ResObj> getDogBreed(@Path(value = "breed") String breed);
