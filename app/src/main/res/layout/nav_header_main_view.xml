@@ -21,6 +21,8 @@
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@color/underline_color"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+
+    </LinearLayout>
 
 </LinearLayout>
