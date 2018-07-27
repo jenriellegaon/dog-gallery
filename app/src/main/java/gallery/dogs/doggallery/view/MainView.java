@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 import gallery.dogs.doggallery.R;
 import gallery.dogs.doggallery.contract.MainContract;
 import gallery.dogs.doggallery.model.pojo.ResObj;
+import gallery.dogs.doggallery.model.pojo.ResObjSingle;
 import gallery.dogs.doggallery.presenter.adapters.HomeAdapter;
 import gallery.dogs.doggallery.presenter.listeners.AboutDialog;
 import gallery.dogs.doggallery.presenter.presenter.MainPresenter;
@@ -168,6 +169,11 @@ public class MainView extends AppCompatActivity
             Log.d("RESPONSE ERROR! ", "Response error");
             homeAdapter.enableFooter(false);
         }
+
+    }
+
+    @Override
+    public void showSingleImage(ResObjSingle resObjSingle) {
 
     }
 

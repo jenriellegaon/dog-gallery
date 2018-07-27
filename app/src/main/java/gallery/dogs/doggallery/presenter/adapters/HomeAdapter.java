@@ -31,6 +31,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int VIEW_TYPE_ITEM = 1;
     private final int VIEW_TYPE_PROGRESSBAR = 0;
+    private final int VIEW_TYPE_PROGRESSBAR_BOTTOM = 2;
 
     MainContract.OnBottomReachedListener onBottomReachedListener;
     String imageURL;
@@ -63,7 +64,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             View loadingView;
             loadingView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.footer, null, false);
+                    .inflate(R.layout.footer, parent, false);
             vh = new ProgressViewHolder(loadingView);
         }
 
@@ -74,6 +75,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof ProgressViewHolder) {
+
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
 
         } else if (imageUrlList.size() > 0 && position < imageUrlList.size()) {
