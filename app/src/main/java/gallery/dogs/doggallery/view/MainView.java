@@ -1,5 +1,7 @@
 package gallery.dogs.doggallery.view;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,16 +37,12 @@ public class MainView extends AppCompatActivity
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @BindView(R.id.nav_view_left)
     NavigationView navigationViewLeft;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
-
     @BindView(R.id.swipy)
     SwipyRefreshLayout swipy;
-
     @BindView(R.id.rv)
     RecyclerView rv;
 
@@ -64,15 +62,12 @@ public class MainView extends AppCompatActivity
 
         //Initialize Views
         initViews();
-
-        //Initialize MVP
-        presenter = new MainPresenter(this);
-
     }
 
     @Override
     public void initViews() {
         setSupportActionBar(toolbar);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ActionBarDrawerToggle toggle;
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -113,8 +108,6 @@ public class MainView extends AppCompatActivity
                 homeAdapter.enableFooter(true);
             }
         });
-
-
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -123,13 +116,14 @@ public class MainView extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-
+            //Load images
             presenter = new MainPresenter(this);
             presenter.getHomeImages();
-            showToast("HOME");
         } else if (id == R.id.nav_browse) {
-            showToast("BROWSE");
+
+            startActivity(new Intent(MainView.this, SecondaryView.class));
         } else if (id == R.id.nav_about) {
+
             //displays about dialog
             new AboutDialog(MainView.this);
         }

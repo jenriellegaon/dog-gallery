@@ -8,13 +8,12 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="@string/home" />
-
-        <item
-            android:id="@+id/nav_browse"
-            android:icon="@drawable/ic_browse"
-            android:title="@string/browse" />
     </group>
 
+    <item
+        android:id="@+id/nav_browse"
+        android:icon="@drawable/ic_browse"
+        android:title="@string/browse" />
 
     <item
         android:id="@+id/nav_about"

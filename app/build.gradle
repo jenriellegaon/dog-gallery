@@ -52,4 +52,7 @@ dependencies {
 
     //MATERIAL DIALOG
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+    //MATERIAL SPINNER
+    implementation 'com.jaredrummler:material-spinner:1.2.5'
 }

@@ -49,7 +49,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         RecyclerView.ViewHolder vh;
 
         context = parent.getContext();
@@ -66,36 +65,39 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             loadingView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.footer, null, false);
             vh = new ProgressViewHolder(loadingView);
-
         }
+
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof ProgressViewHolder) {
-
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
+
         } else if (imageUrlList.size() > 0 && position < imageUrlList.size()) {
 
             if (position == imageUrlList.size() - 1) {
-
                 onBottomReachedListener.onBottomReached(position);
             } else {
 
                 imageURL = MainView.imagesList.get(position);
-                RequestOptions requestOptions = new RequestOptions();
+                final RequestOptions requestOptions = new RequestOptions();
 
                 Glide.with(context)
                         .load(imageURL)
-                        .apply(requestOptions.placeholder(R.drawable.placeholder))
-                        .apply(requestOptions.error(R.drawable.placeholder_unavailable))
+                        .apply(requestOptions.placeholder(R.drawable.placeholder_white))
+//                        .apply(requestOptions.error(R.drawable.placeholder_unavailable_white))
                         .apply(requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .apply(requestOptions.centerCrop())
                         .listener(new RequestListener<Drawable>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 Log.d("FAILED", e.getMessage());
+
+                                //Remove image if it fails to load
+                                removeAt(model);
                                 return false;
                             }
 
@@ -109,6 +111,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
         }
+    }
+
+
+    public void removeAt(Object failed) {
+        imageUrlList.remove(failed);
+        notifyDataSetChanged();
     }
 
     @Override

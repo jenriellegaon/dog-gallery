@@ -9,4 +9,6 @@
     <string name="home">HOME</string>
     <string name="browse">BROWSE</string>
     <string name="about">ABOUT</string>
+    <string name="title_activity_browse_view">BrowseView</string>
+    <string name="title_activity_secondary_view">Browse</string>
 </resources>

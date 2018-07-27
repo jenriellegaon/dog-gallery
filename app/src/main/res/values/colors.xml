@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#263238</color>
     <color name="colorAccent">#ff0045</color>
     <color name="underline_color">#cecccc</color>
+    <color name="highlight">#FFEFEEEE</color>
 </resources>
